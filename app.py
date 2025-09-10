@@ -46,8 +46,8 @@ def safe_response(success: bool, message: str, data=None, code=200):
 @app.route("/get/unisys/payroll", methods=["GET"])
 def get_payroll():
     try:
-        if not unisyseportal_col:
-            return safe_response(False, "Database not connected", code=500)
+        # 🔹 Check MongoDB connection
+        client.admin.command("ping")  # raises exception if not connected
 
         records = list(unisyseportal_col.find({}, {"_id": 0}))
         logging.info("Fetched payroll records.")
@@ -61,8 +61,8 @@ def get_payroll():
 @app.route("/get/ibm/shipping", methods=["GET"])
 def get_shipping():
     try:
-        if not ibmzowe_col:
-            return safe_response(False, "Database not connected", code=500)
+        # 🔹 Check MongoDB connection
+        client.admin.command("ping")  # raises exception if not connected
 
         records = list(ibmzowe_col.find({}, {"_id": 0}))
         logging.info("Fetched shipping records.")
@@ -76,8 +76,8 @@ def get_shipping():
 @app.route("/update/unisys/payroll", methods=["POST"])
 def update_payroll():
     try:
-        if not unisyseportal_col:
-            return safe_response(False, "Database not connected", code=500)
+        # 🔹 Check MongoDB connection
+        client.admin.command("ping")  # raises exception if not connected
 
         data = request.json
         emp_id = data.get("crewMemberId")
@@ -103,8 +103,8 @@ def update_payroll():
 @app.route("/update/ibm/shipping", methods=["POST"])
 def update_shipping():
     try:
-        if not ibmzowe_col:
-            return safe_response(False, "Database not connected", code=500)
+        # 🔹 Check MongoDB connection
+        client.admin.command("ping")  # raises exception if not connected
 
         data = request.json
         shipping_id = data.get("shippingId")
