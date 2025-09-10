@@ -1,4 +1,4 @@
-from flask import Flask, request, jsonify
+from flask import Flask, request, jsonify, render_template
 from pymongo import MongoClient, errors
 import logging
 import os
@@ -12,6 +12,21 @@ logging.basicConfig(
     level=logging.INFO,
     format="%(asctime)s [%(levelname)s] %(message)s"
 )
+
+
+# API information
+api_info = [
+    {"endpoint": "/get/unisys/payroll", "method": "GET", "description": "Fetch all payroll records from Unisys portal."},
+    {"endpoint": "/get/ibm/shipping", "method": "GET", "description": "Fetch all shipping records from IBM Zowe portal."},
+    {"endpoint": "/update/payroll", "method": "POST", "description": "Update a payroll record by crewMemberId."},
+    {"endpoint": "/update/shipping", "method": "POST", "description": "Update a shipping person record by shippingPerson.id."},
+    {"endpoint": "/health", "method": "GET", "description": "Health check endpoint to verify API and DB connectivity."}
+]
+
+# ---------------- Documentation / Landing Page ----------------
+@app.route("/")
+def api_docs():
+    return render_template("docs.html", api_info=api_info)
 
 # ---------------- MongoDB Setup ----------------
 try:
@@ -141,7 +156,51 @@ def get_logs():
     except Exception as e:
         logging.error(f"Error in /logs: {str(e)}")
         return safe_response(False, "Error fetching logs", code=500)
+    
+# ---------------- Health Check Endpoint ----------------
+@app.route("/health", methods=["GET"])
+def health_check():
+    health = {}
+    overall_status = "healthy"
 
+    # 🔹 Flask app is always running if we reach this point
+    health["flask"] = {"status": "healthy", "message": "Flask app is running"}
+
+    # 🔹 MongoDB connection check
+    try:
+        client.admin.command("ping")
+        health["mongodb"] = {"status": "healthy", "message": "MongoDB connection OK"}
+    except Exception as e:
+        logging.error(f"MongoDB health check failed: {str(e)}")
+        health["mongodb"] = {"status": "unhealthy", "message": str(e)}
+        overall_status = "unhealthy"
+
+    # 🔹 Unisys collection check
+    try:
+        unisy_count = unisyseportal_col.count_documents({})
+        health["unisys_collection"] = {
+            "status": "healthy",
+            "message": f"Unisys collection has {unisy_count} records"
+        }
+    except Exception as e:
+        logging.error(f"Unisys collection check failed: {str(e)}")
+        health["unisys_collection"] = {"status": "unhealthy", "message": str(e)}
+        overall_status = "unhealthy"
+
+    # 🔹 IBM collection check
+    try:
+        ibm_count = ibmzowe_col.count_documents({})
+        health["ibm_collection"] = {
+            "status": "healthy",
+            "message": f"IBM collection has {ibm_count} records"
+        }
+    except Exception as e:
+        logging.error(f"IBM collection check failed: {str(e)}")
+        health["ibm_collection"] = {"status": "unhealthy", "message": str(e)}
+        overall_status = "unhealthy"
+
+    health["overall_status"] = overall_status
+    return jsonify(health), 200 if overall_status == "healthy" else 500
 
 # ---------------- Main ----------------
 if __name__ == "__main__":

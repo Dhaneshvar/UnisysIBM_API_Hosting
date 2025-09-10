@@ -3,3 +3,4 @@ __pycache__/
 .env
 venv/
 host1venv/
+app.log

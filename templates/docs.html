@@ -1,0 +1,25 @@
+<!-- templates/docs.html -->
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <title>Unisys-IBM Migration API</title>
+    <link rel="stylesheet" type="text/css" href="{{ url_for('static', filename='style.css') }}">
+</head>
+<body>
+    <header>
+        <h1>Unisys-IBM Migration API</h1>
+        <p>API Layer for connecting Unisys portal and IBM Zowe system. Use these endpoints to fetch, update, and migrate data.</p>
+    </header>
+    <div class="container">
+        {% for api in api_info %}
+        <div class="endpoint-card">
+            <h2>{{ api.endpoint }}</h2>
+            <p><strong>Method:</strong> <code>{{ api.method }}</code></p>
+            <p><strong>Description:</strong> {{ api.description }}</p>
+            <p><strong>Example URL:</strong> <code>https://unisys-ibm-migrator-api.onrender.com{{ api.endpoint }}</code></p>
+        </div>
+        {% endfor %}
+    </div>
+</body>
+</html>
