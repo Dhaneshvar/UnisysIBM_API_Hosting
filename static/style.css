@@ -1,34 +1,101 @@
-/* static/style.css */
+:root {
+    --bold-teal: #004d40;
+    --propel-mint: #00e676;
+    --white: #ffffff;
+    --purposeful-teal: #00796b;
+}
 
 body {
-    font-family: Arial, sans-serif;
-    background-color: #f4f4f4;
-    margin: 0;
-    padding: 0;
-}
-header {
-    background-color: #003366;
-    color: #FFFFFF;
-    padding: 20px;
+    font-family: sans-serif;
+    color: #000;
+    background: #f5f9fa;
     text-align: center;
+    margin: 0;
+    padding: 1em;
 }
+
+h1 {
+    font-size: 36px;
+    font-weight: normal;
+    color: var(--bold-teal);
+    margin-bottom: 0.5em;
+}
+
+h2 {
+    font-size: 18px;
+    font-weight: normal;
+    background-color: var(--bold-teal);
+    color: var(--white);
+    margin: 1em 0;
+    padding: 0.8em;
+    cursor: pointer;
+    display: flex;
+    justify-content: space-between;
+    align-items: center;
+}
+
 .container {
-    padding: 20px;
     max-width: 900px;
     margin: auto;
 }
-h2 {
-    color: #003366;
-}
+
 .endpoint-card {
-    background-color: white;
-    border-left: 5px solid #0077C0;
-    padding: 15px;
-    margin-bottom: 15px;
-    box-shadow: 0 2px 5px rgba(0,0,0,0.1);
+    background: var(--white);
+    border: 1px solid var(--purposeful-teal);
+    border-radius: 4px;
+    margin-bottom: 1em;
+    padding: 1em;
+    box-shadow: 0 2px 5px rgba(0,0,0,0.05);
+    text-align: left;
 }
+
+.detail {
+    margin-top: 10px;
+    padding: 10px;
+    background-color: #E8EFF0;
+    border: 1px solid #D3E7E9;
+    border-radius: 3px;
+}
+
+.hidden {
+    display: none;
+}
+
+.toggle-indicator {
+    font-size: 0.9em;
+    color: var(--propel-mint);
+}
+
+a {
+    color: var(--bold-teal);
+    text-decoration: none;
+}
+
+a:hover {
+    color: var(--purposeful-teal);
+}
+
+footer.footer {
+    margin-top: 2em;
+    font-size: 13px;
+    color: #86989B;
+}
+
 code {
     background-color: #eee;
     padding: 2px 5px;
     border-radius: 3px;
+}
+
+button.primary {
+    background-color: var(--propel-mint);
+    color: var(--white);
+    border: none;
+    padding: 0.75em 1.5em;
+    cursor: pointer;
+    border-radius: 3px;
+}
+
+button.primary:hover {
+    background-color: var(--purposeful-teal);
 }

@@ -1,25 +1,46 @@
-<!-- templates/docs.html -->
 <!DOCTYPE html>
 <html lang="en">
+
 <head>
     <meta charset="UTF-8">
-    <title>Unisys-IBM Migration API</title>
-    <link rel="stylesheet" type="text/css" href="{{ url_for('static', filename='style.css') }}">
+    <title>Unisys-IBM Migration API Docs</title>
+    <link rel="stylesheet" href="{{ url_for('static', filename='style.css') }}">
+    <script>
+        function toggleDetail(id) {
+            const elem = document.getElementById(id);
+            elem.classList.toggle('hidden');
+        }
+    </script>
 </head>
+
 <body>
     <header>
         <h1>Unisys-IBM Migration API</h1>
-        <p>API Layer for connecting Unisys portal and IBM Zowe system. Use these endpoints to fetch, update, and migrate data.</p>
+        <p>API Layer for connecting Unisys portal and IBM Zowe system. Explore endpoints and test them easily.</p>
     </header>
+
     <div class="container">
         {% for api in api_info %}
         <div class="endpoint-card">
-            <h2>{{ api.endpoint }}</h2>
-            <p><strong>Method:</strong> <code>{{ api.method }}</code></p>
-            <p><strong>Description:</strong> {{ api.description }}</p>
-            <p><strong>Example URL:</strong> <code>https://unisys-ibm-migrator-api.onrender.com{{ api.endpoint }}</code></p>
+            <h2 onclick="toggleDetail('detail-{{ loop.index }}')" class="detail-header">
+                {{ api.endpoint }} <span class="toggle-indicator">[+]</span>
+            </h2>
+            <div id="detail-{{ loop.index }}" class="detail hidden">
+                <p><strong>Method:</strong> <code>{{ api.method }}</code></p>
+                <p><strong>Description:</strong> {{ api.description }}</p>
+                <p><strong>Example URL:</strong> 
+                    <a href="https://unisys-ibm-migrator-api.onrender.com{{ api.endpoint }}" target="_blank">
+                        https://unisys-ibm-migrator-api.onrender.com{{ api.endpoint }}
+                    </a>
+                </p>
+            </div>
         </div>
         {% endfor %}
     </div>
+
+    <footer class="footer">
+        Unisys © 2025 - Enterprise Computing Solutions
+    </footer>
 </body>
+
 </html>
