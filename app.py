@@ -2,8 +2,10 @@ from flask import Flask, request, jsonify, render_template
 from pymongo import MongoClient, errors
 import logging
 import os
+from flask_cors import CORS
 
 app = Flask(__name__)
+CORS(app, resources={r"/*": {"origins": "*"}})
 
 # ---------------- Logging Setup ----------------
 LOG_FILE = "app.log"
